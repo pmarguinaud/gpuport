@@ -12,4 +12,5 @@ singularity shell \
   --bind $HOME/.ssh \
   --bind $SSL_CERT_FILE \
   --bind $SSL_CERT_DIR \
+  --bind $HOME/.git-credentials \
   $prefix/.singularity.sif
