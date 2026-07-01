@@ -1,0 +1,8 @@
+
+# Exclude everything
+*
+
+# Keep only these files
+!.gitignore
+!scripts/
+!scripts/**
