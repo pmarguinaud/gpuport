@@ -1,0 +1,5 @@
+source /etc/bash.bashrc
+
+export PATH=$HOME/install/fxtran/bin:$PATH
+
+set -o vi
