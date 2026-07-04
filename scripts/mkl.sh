@@ -10,6 +10,12 @@ then
   URL="https://registrationcenter-download.intel.com/akdlm/IRC_NAS/db60f483-f02e-4f7e-9bcd-5e01dba97444/intel-onemkl-2026.0.0.909_offline.sh"
 fi
 
+install=$HOME/install
+
+mkdir -p $install $HOME/tmp
+
+cd $HOME/tmp
+
 b=$(basename $URL)
 
 if [ ! -f "$b" ]
@@ -23,8 +29,6 @@ then
 else
   exit 1
 fi
-
-install=$HOME/install
 
 if [ ! -d "$install/intel/oneapi/mkl/$version" ]
 then

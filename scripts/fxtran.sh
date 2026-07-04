@@ -10,3 +10,5 @@ cd fxtran
 make 
 cd perl5
 make install
+
+cpanm XML::XPath::Parser 
