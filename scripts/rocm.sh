@@ -132,8 +132,13 @@ function installNETCDF ()
   cd ..
 }
 
-INSTALL=$HOME/install
-SOURCES=$HOME/sources
+prefix=$(dirname $0)
+prefix=$(dirname $prefix)
+prefix=$(realpath $prefix)
+
+INSTALL=$prefix/install
+SOURCES=$prefix/sources
+TMP=$prefix/tmp
 
 mkdir -p $INSTALL $SOURCES
 
@@ -153,8 +158,8 @@ fi
 
 VV=$(echo $version | sed -e 's/\.//g')
 
-mkdir -p $HOME/tmp
-cd $HOME/tmp
+mkdir -p $TMP
+cd $TMP
 
 installROCM
 

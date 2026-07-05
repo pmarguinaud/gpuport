@@ -1,0 +1,27 @@
+#!/usr/bin/perl -w
+
+use strict;
+use Data::Dumper;
+use FileHandle;
+use File::stat;
+
+my @cmdline = </proc/*/cmdline>;
+
+my %F90;
+
+for my $cmdline (@cmdline)
+  {
+    next unless (my $stat = stat ($cmdline));
+    next unless ($stat->uid () eq $<);
+    next unless (my $fh = 'FileHandle'->new ("<$cmdline"));
+    local $/ = undef;
+    my $cmd = <$fh>;
+    my @cmd = split (m/\0/o, $cmd);
+    my ($F90) = grep { m/\.F90$/o } @cmd;
+    $F90{$F90}++ if ($F90);
+  }
+
+for my $F90 (sort keys (%F90))
+  {
+    print "$F90\n";
+  }

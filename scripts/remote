@@ -1,0 +1,58 @@
+#!/usr/bin/perl -w
+
+use strict;
+use FileHandle;
+use Data::Dumper;
+use File::Basename;
+use File::Spec;
+use Sys::Hostname;
+
+sub runGitCommand
+{
+  my @cmd = @_;
+  system (@cmd)
+    and die ("Command `@cmd' failed");
+}
+
+my $id = 'pmarguinaud';
+
+my @remote = split (m/\n/o, `git remote -v`);
+
+if (my $c = $!)
+  {
+    die;
+  }
+
+my %name2location;
+
+for my $remote (@remote)
+  {
+    my ($name, $location) = split (m/\s+/o, $remote);
+    $name2location{$name} = $location;
+  }
+
+if ($name2location{origin} && ($name2location{origin} =~ m{^https://github.com/}))
+  {
+    my $location = $name2location{origin};
+    my $depot = &basename ($location); $location = &dirname ($location);
+    my $user = &basename ($location); $location = &dirname ($location);
+    my $site = &basename ($location);
+
+    if ($user ne $id)
+      {
+        &runGitCommand ('git', 'remote', 'rename', 'origin', $user);
+        &runGitCommand ('git', 'remote', 'add', 'origin', "https://$site/$id/$depot");
+      }
+  }
+elsif ($name2location{origin} && ($name2location{origin} =~ m,^/home/gmap/mrpe/mary/repositories/,o))
+  {
+    my $location = $name2location{origin};
+    my $depot = &basename ($location);
+    
+    &runGitCommand ('git', 'remote', 'rename', 'origin', 'mary');
+    &runGitCommand ('git', 'remote', 'add', 'origin', "https://github.com/$id/$depot");
+  }
+
+
+
+

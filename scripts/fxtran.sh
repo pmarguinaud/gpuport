@@ -1,8 +1,16 @@
 #!/bin/bash
 
-eval $(perl -I $HOME/perl5/lib/perl5 -Mlocal::lib)
+set -x
 
-cd $HOME/install
+prefix=$(dirname $0)
+prefix=$(dirname $prefix)
+prefix=$(realpath $prefix)
+
+eval $(perl -Mlocal::lib=$prefix/perl5)
+
+INSTALL=$prefix/install
+
+cd $INSTALL
 
 git clone https://github.com/pmarguinaud/fxtran
 cd fxtran

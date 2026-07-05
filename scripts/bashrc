@@ -1,5 +1,10 @@
 source /etc/bash.bashrc
 
-export PATH=$HOME/install/fxtran/bin:$PATH
+prefix=$HOME/gpuport
+
+export PATH=$prefix/install/fxtran/bin:$PATH
+export PERL5LIB=$prefix/perl5/lib/perl5:$prefix/lib/perl5/x86_64-linux-gnu-thread-multi
 
 set -o vi
+
+alias rm=~/gpuport/scripts/rm.pl

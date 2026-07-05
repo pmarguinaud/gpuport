@@ -10,11 +10,16 @@ then
   URL="https://registrationcenter-download.intel.com/akdlm/IRC_NAS/db60f483-f02e-4f7e-9bcd-5e01dba97444/intel-onemkl-2026.0.0.909_offline.sh"
 fi
 
-install=$HOME/install
+prefix=$(dirname $0)
+prefix=$(dirname $prefix)
+prefix=$(realpath $prefix)
 
-mkdir -p $install $HOME/tmp
+INSTALL=$prefix/install
+TMP=$prefix/tmp
 
-cd $HOME/tmp
+mkdir -p $INSTALL $TMP
+
+cd $TMP
 
 b=$(basename $URL)
 
@@ -30,9 +35,11 @@ else
   exit 1
 fi
 
-if [ ! -d "$install/intel/oneapi/mkl/$version" ]
+if [ ! -d "$INSTALL/intel/oneapi/mkl/$version" ]
 then
-  sh ./$b  -a --cli --action install --components all --install-dir $HOME/install/intel/oneapi  --eula accept --silent
+  # Force temporary files to be extracted in $TMP
+  \rm -rf intel
+  HOME=$TMP \
+  sh ./$b -a --cli --action install --components all --install-dir=$INSTALL/intel/oneapi --eula accept --silent
 fi
 
-\rm -rf $HOME/intel
