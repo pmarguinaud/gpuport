@@ -10,8 +10,9 @@ mkdir -p $prefix/.vim
 mkdir -p $prefix/.cpanm
 
 exec \
-singularity shell \
+singularity exec \
   --no-home \
+  --env PS1='\[\033[0;31m\][\u@\h \W]\$ \[\033[0m\]' \
   --pwd $prefix \
   --bind $prefix \
   --bind $prefix/.vim:$HOME/.vim \
@@ -23,4 +24,4 @@ singularity shell \
   --bind $HOME/.ssh:$HOME/.ssh:ro \
   --bind $HOME/.gitconfig:$HOME/.gitconfig:ro \
   --bind $HOME/.git-credentials:$HOME/.git-credentials:ro \
-  $prefix/.singularity.sif
+  $prefix/.singularity.sif bash --rcfile $prefix/scripts/bashrc

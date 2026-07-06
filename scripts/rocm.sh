@@ -48,7 +48,7 @@ function installOPENMPI ()
 
   cd $b
 
-  ./configure --prefix=$INSTALL/rocm/$VV/openmpi-5.0.7
+  ./configure --prefix=$INSTALL/rocm/$VV/openmpi-5.0.7 --with-pmix
 
   make -j$nthread
   make install 
