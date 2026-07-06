@@ -8,6 +8,9 @@ cd $prefix
 
 mkdir -p $prefix/.vim
 mkdir -p $prefix/.cpanm
+mkdir -p $prefix/.ssh
+touch -a $prefix/.git-credentials
+touch -a $prefix/.gitconfig
 
 exec \
 singularity exec \
