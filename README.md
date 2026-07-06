@@ -118,9 +118,20 @@ This clones `https://github.com/pmarguinaud/fxtran`, builds the C library and th
 
 #### Create the bundle
 
-Clone IAL into $HOME/gpuport. 
+Clone IAL into $HOME/gpuport:
 
-Create a $HOME/gpuport/IAL-build directory, and run ../IAL/bundle/ial-bundle create --bundle ../IAL/bundle/bundle.yml to create a bundle.
+```bash
+cd $HOME/gpuport
+git clone -b aplaromeopenmp3 https://github.com/pmarguinaud/IAL
+```
+
+Create a bundle:
+
+```bash
+mkdir -p IAL-build
+cd IAL-build
+../IAL/bundle/ial-bundle create --bundle ../IAL/bundle/bundle.yml
+```
 
 With the toolchains installed, you can now build IAL. Two helper scripts are provided for the two primary CPU targets.
 
