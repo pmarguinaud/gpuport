@@ -6,6 +6,9 @@ use Data::Dumper;
 use File::Basename;
 use File::Spec;
 use Sys::Hostname;
+use URI;
+
+my $HOME = (getpwuid ($<))[7];
 
 sub runGitCommand
 {
@@ -14,7 +17,27 @@ sub runGitCommand
     and die ("Command `@cmd' failed");
 }
 
-my $id = 'pmarguinaud';
+sub getGitHubID
+{
+  my @cred = do { my $fh = 'FileHandle'->new ("<$HOME/.git-credentials"); die unless ($fh); <$fh> };
+  for my $cred (@cred)
+    {
+      chomp ($cred);
+      my $url = 'URI'->new ($cred);
+   
+      my $host = $url->host; 
+
+      next unless ($host eq 'github.com');
+  
+      my $userinfo = $url->userinfo;
+      
+      my ($user, $token) = split(':', $userinfo, 2);
+ 
+      return $user;
+    }
+}
+
+my $id = &getGitHubID ();
 
 my @remote = split (m/\n/o, `git remote -v`);
 
