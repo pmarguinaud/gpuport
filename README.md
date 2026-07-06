@@ -35,6 +35,10 @@ $HOME/gpuport/IAL/       # IAL source code
 └── bundle/
     ├── ial-bundle
     └── arch/fxtran/
+
+$HOME/gpuport/IAL-build/ # IAL bundle & build
+└── source/
+└── build.<build-type>/
 ```
 
 ---
