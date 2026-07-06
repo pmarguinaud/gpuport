@@ -12,7 +12,7 @@ mkdir -p $prefix/.cpanm
 exec \
 singularity exec \
   --no-home \
-  --env PS1='\[\033[0;31m\][\u@\h \W]\$ \[\033[0m\]' \
+  --env PS1='\[\033[7m\]\u@\h:\w\$ \[\033[0m\] ' \
   --pwd $prefix \
   --bind $prefix \
   --bind $prefix/.vim:$HOME/.vim \
