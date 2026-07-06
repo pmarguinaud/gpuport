@@ -8,4 +8,4 @@ export PERL5LIB=$prefix/perl5/lib/perl5:$prefix/lib/perl5/x86_64-linux-gnu-threa
 set -o vi
 
 alias rm=~/gpuport/scripts/rm.pl
-
+alias ls='ls -N --color=auto'
