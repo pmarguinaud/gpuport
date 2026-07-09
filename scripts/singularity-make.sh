@@ -29,7 +29,7 @@ From: $base
   yes | unminimize && \
   apt install -y command-not-found liblocal-lib-perl cmake make gcc gfortran git tzdata wget libwww-perl locales vim-nox \
                  man man-db manpages manpages-dev libxml-libxml-perl g++ perl-doc build-essential libgcc-13-dev \
-                 libperl-dev libjson-perl libyaml-perl libdbi-perl cpanminus sqlite3 libsqlite3-dev environment-modules \
+                 libperl-dev libjson-perl libyaml-perl libdbi-perl cpanminus sqlite3 libsqlite3-dev environment-modules libterm-readline-perl-perl \
                  fypp libdbd-sqlite3-perl libopenmpi-dev openmpi-bin apt-file pciutils gdb psmisc htop libxml2-dev libpmix-dev \
                  libcurl4-openssl-dev xterm screen libxml2-utils tree time gawk bison flex gh curl ca-certificates rsync libaec-dev \
                  python3 python3-pip python3-venv strace valgrind ltrace linux-perf jq proxychains4 python3-setuptools libfile-type-perl && \
@@ -38,6 +38,7 @@ From: $base
   locale-gen && \
   mandb && \
   apt update && \
+  apt install -y --allow-downgrades tar=1.35+dfsg-4 && \
   apt-file update && \
   echo 'source /usr/share/modules/init/bash' >> /etc/bash.bashrc && \
   rm -rf /home/ubuntu && \
