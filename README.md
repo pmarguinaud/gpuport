@@ -104,6 +104,18 @@ This installs the AMD ROCm AFAR compiler and builds OpenMPI, HDF5, and NetCDF ag
 * Builds OpenMPI 5.0.7 under `install/rocm/2321/openmpi-5.0.7`
 * Builds HDF5 and NetCDF under `install/rocm/2321/hdf5/1.14.3` and `.../netcdf4/4.9.2`
 
+### 5b. Build UCX
+
+UCX provides the native InfiniBand transport used by OpenMPI, and must be built
+**before** `rocm.sh`, which configures OpenMPI against it.
+
+```
+./scripts/ucx.sh [ROCM_VERSION]
+```
+
+* Default ROCm version tag: `2321`
+* Installs UCX 1.17.0 to: `install/rocm/2321/ucx`
+
 ### 6. Install fxtran
 
 `fxtran` is the Fortran parser and source-transformation utility required by the IAL `fxtran` architecture files.
@@ -193,6 +205,10 @@ Downloads and installs the NVIDIA HPC SDK, then compiles and installs HDF5 and N
 
 ### `rocm.sh`
 Downloads and installs the ROCm AFAR compiler release, then builds OpenMPI, HDF5, and NetCDF-C/Fortran with the AMD LLVM-based compilers (`amdflang` / `amdclang`). Installations are placed under `install/rocm/<version>/`.
+
+### `ucx.sh`
+Downloads and builds UCX 1.17.0 under `install/rocm/<version>/ucx`, with multi-threading
+and the InfiniBand (verbs / mlx5) transports enabled. Must be run before `rocm.sh`.
 
 ### `fxtran.sh`
 Clones the `fxtran` repository, compiles the native code and Perl bindings, installs them locally, and pulls in the required `XML::XPath::Parser` CPAN module.

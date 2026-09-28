@@ -40,7 +40,8 @@ apt install -y command-not-found liblocal-lib-perl cmake make gcc gfortran git t
                libperl-dev libjson-perl libyaml-perl libdbi-perl cpanminus sqlite3 libsqlite3-dev environment-modules libterm-readline-perl-perl \\
                fypp libdbd-sqlite3-perl libopenmpi-dev openmpi-bin apt-file pciutils gdb psmisc htop libxml2-dev libpmix-dev xsel xclip \\
                libcurl4-openssl-dev xterm screen libxml2-utils tree time gawk bison flex gh curl ca-certificates rsync libaec-dev \\
-               python3 python3-pip python3-venv strace valgrind ltrace linux-perf jq proxychains4 python3-setuptools libfile-type-perl 
+               python3 python3-pip python3-venv strace valgrind ltrace linux-perf jq proxychains4 python3-setuptools libfile-type-perl \\
+               libibverbs-dev librdmacm-dev libnuma-dev
 
 sed -i 's/^# *fr_FR.UTF-8 UTF-8/fr_FR.UTF-8 UTF-8/' /etc/locale.gen 
 locale-gen 

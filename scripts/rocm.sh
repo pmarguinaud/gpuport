@@ -48,7 +48,13 @@ function installOPENMPI ()
 
   cd $b
 
-  ./configure --prefix=$INSTALL/rocm/$VV/openmpi-5.0.7 --with-pmix
+  # --with-ucx      : without UCX, OpenMPI 5 has no native InfiniBand transport
+  #                   (the openib BTL was removed in 5.x) and falls back to TCP over IPoIB
+  # --disable-oshmem : OSHMEM is built as soon as UCX is found, and does not
+  #                   compile with amdclang (integer to pointer conversion, an error in C23)
+
+  ./configure --prefix=$INSTALL/rocm/$VV/openmpi-5.0.7 --with-pmix \
+              --with-ucx=$INSTALL/rocm/$VV/ucx --disable-oshmem
 
   make -j$nthread
   make install 
