@@ -53,6 +53,7 @@ function installOPENMPI ()
   # --disable-oshmem : OSHMEM is built as soon as UCX is found, and does not
   #                   compile with amdclang (integer to pointer conversion, an error in C23)
 
+  CFLAGS="-Wno-error=int-conversion" \
   ./configure --prefix=$INSTALL/rocm/$VV/openmpi-5.0.7 --with-pmix \
               --with-ucx=$INSTALL/rocm/$VV/ucx --disable-oshmem
 
@@ -153,6 +154,7 @@ URL=$1
 if [ "x$URL" = "x" ]
 then
   URL="https://repo.radeon.com/rocm/misc/flang/therock-afar-23.2.1-gfx94X-7.13.0-7357b5084b.tar.bz2"
+  URL="https://repo.radeon.com/rocm/misc/flang/therock-afar-24.3.0-multiarch-10.1.0-592954c.tar.bz2"
 fi
 
 if [[ $URL =~ therock-afar-([0-9]+\.[0-9]+\.[0-9]+)- ]]
