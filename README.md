@@ -1,6 +1,6 @@
 # IAL GPU Port Build Environment
 
-This directory contains the automation scripts used to create a containerised build environment for **IAL** (ARPEGE & AROME) with support for both the **NVIDIA HPC SDK (NVHPC)** and **AMD ROCm** toolchains.
+This directory contains the automation scripts used to create a containerised build environment for **IAL** (ARPEGE & AROME) with support for the **NVIDIA HPC SDK (NVHPC)**, **AMD ROCm** and **Intel oneAPI** toolchains.
 
 The typical workflow is:
 
@@ -15,7 +15,7 @@ The typical workflow is:
 
 * Linux host with **Singularity/Apptainer** installed (`singularity build --fakeroot` is used).
 * Sufficient disk space under `$HOME/gpuport` (or wherever this repository is checked out).
-* Network access for downloading NVIDIA HPC SDK, ROCm, Intel MKL, HDF5, NetCDF, and OpenMPI sources.
+* Network access for downloading NVIDIA HPC SDK, ROCm, Intel oneAPI, Intel MKL, HDF5, NetCDF, and OpenMPI sources.
 
 ---
 
@@ -104,7 +104,23 @@ This installs the AMD ROCm AFAR compiler and builds OpenMPI, HDF5, and NetCDF ag
 * Builds OpenMPI 5.0.7 under `install/rocm/2321/openmpi-5.0.7`
 * Builds HDF5 and NetCDF under `install/rocm/2321/hdf5/1.14.3` and `.../netcdf4/4.9.2`
 
-### 6. Install fxtran
+### 6. Install the Intel oneAPI toolchain
+
+This installs the Intel oneAPI toolkit (C, C++ and Fortran compilers) and builds the HDF5 / NetCDF4-Fortran dependency chain against it.
+
+```bash
+./scripts/intel.sh [URL]
+```
+
+* Default: downloads the **Intel oneAPI toolkit 2026.1.1** offline installer (`intel-oneapi-toolkit-2026.1.1.33_offline.sh`).
+* Installs to: `install/intel/oneapi/` (compilers under `install/intel/oneapi/compiler/2026.1`; the toolkit also provides MKL and Intel MPI)
+* Sets `CC=icx`, `CXX=icpx`, `FC=ifx`
+* Builds HDF5 1.14.6 under `install/intel/2026.1/hdf5/1.14.3`
+* Builds NetCDF-C 4.9.3 and NetCDF-Fortran 4.6.2 under `install/intel/2026.1/netcdf4/4.9.2`
+
+The Intel compilers do not record the location of their runtime libraries (`libimf`, `libsvml`, `libifcoremt`, ...), so the libraries are linked with an rpath to `install/intel/oneapi/compiler/<version>/lib`. Executables built with `icx`/`ifx` need the same rpath, or the Intel environment loaded (`source install/intel/oneapi/compiler/<version>/env/vars.sh`) at run time.
+
+### 7. Install fxtran
 
 `fxtran` is the Fortran parser and source-transformation utility required by the IAL `fxtran` architecture files.
 
@@ -114,7 +130,7 @@ This installs the AMD ROCm AFAR compiler and builds OpenMPI, HDF5, and NetCDF ag
 
 This clones `https://github.com/pmarguinaud/fxtran`, builds the C library and the Perl bindings, and installs them under `install/fxtran`. It also installs the Perl dependency `XML::XPath::Parser` via `cpanm`.
 
-### 7. Build IAL
+### 8. Build IAL
 
 #### Create the bundle
 
@@ -193,6 +209,9 @@ Downloads and installs the NVIDIA HPC SDK, then compiles and installs HDF5 and N
 
 ### `rocm.sh`
 Downloads and installs the ROCm AFAR compiler release, then builds OpenMPI, HDF5, and NetCDF-C/Fortran with the AMD LLVM-based compilers (`amdflang` / `amdclang`). Installations are placed under `install/rocm/<version>/`.
+
+### `intel.sh`
+Downloads and silently installs the Intel oneAPI toolkit, then compiles and installs HDF5 and NetCDF-C/Fortran with the Intel compilers (`icx` / `icpx` / `ifx`), adding an rpath to the Intel runtime libraries. The installation is skipped if `ifx` is already present under `install/intel/oneapi/compiler/<version>`. Libraries are placed under `install/intel/<version>/`.
 
 ### `fxtran.sh`
 Clones the `fxtran` repository, compiles the native code and Perl bindings, installs them locally, and pulls in the required `XML::XPath::Parser` CPAN module.
