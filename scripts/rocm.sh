@@ -48,6 +48,7 @@ function installOPENMPI ()
 
   cd $b
 
+  CFLAGS="-Wno-error=int-conversion" \
   ./configure --prefix=$INSTALL/rocm/$VV/openmpi-5.0.7 --with-pmix
 
   make -j$nthread
@@ -147,6 +148,7 @@ URL=$1
 if [ "x$URL" = "x" ]
 then
   URL="https://repo.radeon.com/rocm/misc/flang/therock-afar-23.2.1-gfx94X-7.13.0-7357b5084b.tar.bz2"
+  URL="https://repo.radeon.com/rocm/misc/flang/therock-afar-24.3.0-multiarch-10.1.0-592954c.tar.bz2"
 fi
 
 if [[ $URL =~ therock-afar-([0-9]+\.[0-9]+\.[0-9]+)- ]]

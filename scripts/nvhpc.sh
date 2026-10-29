@@ -129,6 +129,7 @@ URL=$1
 if [ "x$URL"  = "x" ]
 then
   URL="https://developer.download.nvidia.com/hpc-sdk/26.5/nvhpc_2026_265_Linux_x86_64_cuda_multi.tar.gz"
+  URL="https://developer.download.nvidia.com/hpc-sdk/26.9/nvhpc_2026_269_Linux_x86_64_cuda_multi.tar.gz"
 fi
 
 if [[ $URL =~ /hpc-sdk/([0-9]+\.[0-9]+)/ ]]
