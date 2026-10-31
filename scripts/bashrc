@@ -5,6 +5,11 @@ prefix=$HOME/gpuport
 export PATH=$prefix/install/fxtran/bin:$PATH
 export PERL5LIB=$prefix/perl5/lib/perl5:$prefix/lib/perl5/x86_64-linux-gnu-thread-multi
 
+if [ -d "$prefix/install/modulefiles" ]
+then
+  module use $prefix/install/modulefiles
+fi
+
 set -o vi
 
 alias rm=~/gpuport/scripts/rm.pl

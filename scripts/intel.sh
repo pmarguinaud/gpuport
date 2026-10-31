@@ -103,6 +103,35 @@ function installNETCDF ()
   cd ..
 }
 
+function installMODULE ()
+{
+  mkdir -p $INSTALL/modulefiles/intel
+
+  cat > $INSTALL/modulefiles/intel/$version << EOF
+#%Module1.0
+
+conflict intel
+conflict rocm
+conflict nvhpc
+conflict nvhpc-nompi
+conflict nvhpc-byo-compiler
+conflict nvhpc-hpcx
+
+set oneapi $INSTALL/intel/oneapi
+
+source-sh bash \$oneapi/compiler/$version/env/vars.sh
+source-sh bash \$oneapi/mpi/latest/env/vars.sh
+source-sh bash \$oneapi/mkl/latest/env/vars.sh
+
+setenv CC icx
+setenv CXX icpx
+setenv FC ifx
+setenv F90 ifx
+setenv F77 ifx
+setenv CPP cpp
+EOF
+}
+
 prefix=$(dirname $0)
 prefix=$(dirname $prefix)
 prefix=$(realpath $prefix)
@@ -147,4 +176,6 @@ intelrpath="-Wl,-rpath,$INSTALL/intel/oneapi/compiler/$version/lib"
 installHDF5
 
 installNETCDF
+
+installMODULE
 

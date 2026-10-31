@@ -88,7 +88,7 @@ This installs the NVIDIA HPC SDK and builds the HDF5 / NetCDF4-Fortran dependenc
 * Builds HDF5 1.14.3 under `install/nvhpc/26.5/hdf5/1.14.3`
 * Builds NetCDF-C 4.9.3 and NetCDF-Fortran 4.6.2 under `install/nvhpc/26.5/netcdf4/4.9.2`
 
-After installation, the script loads the `nvhpc/26.5` module automatically.
+After installation, the script loads the `nvhpc/26.5` module automatically. The NVHPC modulefiles are linked into `install/modulefiles`, see [Compiler modules](#compiler-modules).
 
 ### 5. Install the ROCm toolchain
 
@@ -103,6 +103,7 @@ This installs the AMD ROCm AFAR compiler and builds OpenMPI, HDF5, and NetCDF ag
 * Sets `FC=amdflang`, `CC=amdclang`, `CXX=amdclang++`
 * Builds OpenMPI 5.0.7 under `install/rocm/2321/openmpi-5.0.7`
 * Builds HDF5 and NetCDF under `install/rocm/2321/hdf5/1.14.3` and `.../netcdf4/4.9.2`
+* Generates the modulefile `install/modulefiles/rocm/23.2.1`, see [Compiler modules](#compiler-modules)
 
 ### 5b. Build UCX
 
@@ -129,6 +130,7 @@ This installs the Intel oneAPI toolkit (C, C++ and Fortran compilers) and builds
 * Sets `CC=icx`, `CXX=icpx`, `FC=ifx`
 * Builds HDF5 1.14.6 under `install/intel/2026.1/hdf5/1.14.3`
 * Builds NetCDF-C 4.9.3 and NetCDF-Fortran 4.6.2 under `install/intel/2026.1/netcdf4/4.9.2`
+* Generates the modulefile `install/modulefiles/intel/2026.1`, see [Compiler modules](#compiler-modules)
 
 The Intel compilers do not record the location of their runtime libraries (`libimf`, `libsvml`, `libifcoremt`, ...), so the libraries are linked with an rpath to `install/intel/oneapi/compiler/<version>/lib`. Executables built with `icx`/`ifx` need the same rpath, or the Intel environment loaded (`source install/intel/oneapi/compiler/<version>/env/vars.sh`) at run time.
 
@@ -188,6 +190,23 @@ With the toolchains installed, you can now build IAL. Two helper scripts are pro
 * Target: `forecast-only`
 
 The build artefacts are placed in `build.<tag>/` inside the repository root.
+
+---
+
+## Compiler modules
+
+`nvhpc.sh`, `rocm.sh` and `intel.sh` register the compilers they install in `install/modulefiles`, and `scripts/bashrc` adds this directory to `MODULEPATH` when entering the container with `singularity-shell.sh`:
+
+```bash
+module avail
+module load rocm/24.3.0   # amdflang, amdclang, amdclang++, OpenMPI
+module load nvhpc/26.9    # nvfortran, nvc, nvc++, OpenMPI
+module load intel/2026.1  # ifx, icx, icpx, Intel MPI, MKL
+```
+
+The `rocm`, `nvhpc` and `intel` modules conflict with each other: unload one before loading another. They do not set up HDF5 or NetCDF. Modules are not needed for the IAL builds, which purge them and set up their own environment.
+
+For an existing installation, running `nvhpc.sh`, `rocm.sh` or `intel.sh` again creates the modules without rebuilding anything.
 
 ---
 

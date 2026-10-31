@@ -47,7 +47,7 @@ function installHDF5 ()
     wget -O $t https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_6/downloads/hdf5-1.14.6.tar.gz
   fi
 
-  if [ -d "INSTALL/nvhpc/$version/hdf5/1.14.3" ]
+  if [ -d "$INSTALL/nvhpc/$version/hdf5/1.14.3" ]
   then
     return
   fi
@@ -114,6 +114,17 @@ function installNETCDF ()
   cd ..
 }
 
+function installMODULE ()
+{
+  mkdir -p $INSTALL/modulefiles
+
+  for d in $INSTALL/nvidia/hpc_sdk/modulefiles/*
+  do
+    b=$(basename $d)
+    ln -sfn ../nvidia/hpc_sdk/modulefiles/$b $INSTALL/modulefiles/$b
+  done
+}
+
 prefix=$(dirname $0)
 prefix=$(dirname $prefix)
 prefix=$(realpath $prefix)
@@ -144,7 +155,9 @@ cd $TMP
 
 installNVHPC
 
-export MODULEPATH=$INSTALL/nvidia/hpc_sdk/modulefiles:$MODULEPATH
+installMODULE
+
+export MODULEPATH=$INSTALL/modulefiles:$MODULEPATH
 module load nvhpc/$version
 
 installHDF5
