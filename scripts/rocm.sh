@@ -139,6 +139,43 @@ function installNETCDF ()
   cd ..
 }
 
+function installMODULE ()
+{
+  mkdir -p $INSTALL/modulefiles/rocm
+
+  cat > $INSTALL/modulefiles/rocm/$version << EOF
+#%Module1.0
+
+conflict rocm
+conflict nvhpc
+conflict nvhpc-nompi
+conflict nvhpc-byo-compiler
+conflict nvhpc-hpcx
+
+set rocmhome $INSTALL/rocm/$VV
+set mpihome \$rocmhome/openmpi-5.0.7
+
+setenv ROCM_PATH \$rocmhome
+setenv CC amdclang
+setenv CXX amdclang++
+setenv FC amdflang
+setenv F90 amdflang
+setenv F77 amdflang
+setenv CPP cpp
+
+prepend-path PATH \$rocmhome/lib/llvm/bin
+prepend-path PATH \$rocmhome/bin
+prepend-path PATH \$mpihome/bin
+
+prepend-path LD_LIBRARY_PATH \$rocmhome/lib/llvm/lib
+prepend-path LD_LIBRARY_PATH \$rocmhome/lib
+prepend-path LD_LIBRARY_PATH \$rocmhome/ucx/lib
+prepend-path LD_LIBRARY_PATH \$mpihome/lib
+
+prepend-path MANPATH \$mpihome/share/man
+EOF
+}
+
 prefix=$(dirname $0)
 prefix=$(dirname $prefix)
 prefix=$(realpath $prefix)
@@ -182,4 +219,6 @@ installOPENMPI
 installHDF5
 
 installNETCDF
+
+installMODULE
 
